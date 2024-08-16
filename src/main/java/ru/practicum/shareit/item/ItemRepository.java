@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Repository
+@Slf4j
 public class ItemRepository extends BaseRepository<Item> {
 
     public ItemRepository(JdbcTemplate jdbc, RowMapper<Item> mapper) {
@@ -39,6 +41,7 @@ public class ItemRepository extends BaseRepository<Item> {
             );
             item.setId(id);
         } catch (InternalServerException exception) {
+            log.error("При добавлении вещи произошла ошибка: " + exception.getMessage());
             return Optional.empty();
         }
         return Optional.of(item);
@@ -54,6 +57,7 @@ public class ItemRepository extends BaseRepository<Item> {
                     item.getId()
             );
         } catch (InternalServerException exception) {
+            log.error("При изменении вещи произошла ошибка: " + exception.getMessage());
             return Optional.empty();
         }
         return Optional.of(item);

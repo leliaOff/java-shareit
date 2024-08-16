@@ -1,5 +1,6 @@
 package ru.practicum.shareit.user;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Repository
+@Slf4j
 public class UserRepository extends BaseRepository<User> {
 
     public UserRepository(JdbcTemplate jdbc, RowMapper<User> mapper) {
@@ -37,6 +39,7 @@ public class UserRepository extends BaseRepository<User> {
             );
             user.setId(id);
         } catch (InternalServerException exception) {
+            log.error("При добавлении пользователя произошла ошибка: " + exception.getMessage());
             return Optional.empty();
         }
         return Optional.of(user);
@@ -51,6 +54,7 @@ public class UserRepository extends BaseRepository<User> {
                     user.getId()
             );
         } catch (InternalServerException exception) {
+            log.error("При изменении пользователя произошла ошибка: " + exception.getMessage());
             return Optional.empty();
         }
         return Optional.of(user);

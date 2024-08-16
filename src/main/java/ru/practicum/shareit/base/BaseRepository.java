@@ -47,6 +47,7 @@ public class BaseRepository<T> {
             }
             return results.stream().findFirst();
         } catch (EmptyResultDataAccessException ignored) {
+            log.error("При вызове метода [find] произошла ошибка: EmptyResultDataAccessException");
             return Optional.empty();
         }
     }
@@ -62,6 +63,7 @@ public class BaseRepository<T> {
         try {
             return jdbc.queryForObject(query, Integer.class, params);
         } catch (EmptyResultDataAccessException ignored) {
+            log.error("При вызове метода [count] произошла ошибка: EmptyResultDataAccessException");
             return 0;
         }
     }
@@ -78,6 +80,7 @@ public class BaseRepository<T> {
         try {
             return (Long) Objects.requireNonNull(keyHolder.getKeys()).get("ID");
         } catch (NullPointerException exception) {
+            log.error("При вызове метода [create] произошла ошибка: " + exception.getMessage());
             return null;
         }
     }
