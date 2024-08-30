@@ -3,6 +3,7 @@ package ru.practicum.shareit.item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.ItemDto;
 
 import java.util.Collection;
 
@@ -18,8 +19,8 @@ public class ItemController {
     }
 
     @GetMapping
-    public Collection<ItemDto> get(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
-        return itemService.get(ownerId);
+    public Collection<ItemDto> getAllItems(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+        return itemService.getAllItems(ownerId);
     }
 
     @GetMapping("/search")

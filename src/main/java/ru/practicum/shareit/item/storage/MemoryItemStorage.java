@@ -14,7 +14,7 @@ import java.util.Optional;
 public class MemoryItemStorage implements ItemStorage {
     private final HashMap<Long, Item> items = new HashMap<>();
 
-    public Collection<Item> get(Long ownerId) {
+    public Collection<Item> getAllItems(Long ownerId) {
         return items.values().stream()
                 .filter(item -> item.getOwnerId().equals(ownerId))
                 .toList();
@@ -32,18 +32,15 @@ public class MemoryItemStorage implements ItemStorage {
         return items.containsKey(id) ? Optional.of(items.get(id)) : Optional.empty();
     }
 
-    public Optional<Item> create(Item item) {
+    public Item create(Item item) {
         item.setId(Helper.nextId(items));
         items.put(item.getId(), item);
-        return Optional.of(item);
+        return item;
     }
 
-    public Optional<Item> update(Long id, Item item) {
-        if (find(id).isEmpty()) {
-            return Optional.empty();
-        }
+    public Item update(Long id, Item item) {
         items.put(id, item);
-        return Optional.of(item);
+        return item;
     }
 
     public void delete(Item item) {

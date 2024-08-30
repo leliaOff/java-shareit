@@ -1,9 +1,6 @@
 package ru.practicum.shareit.item;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -11,6 +8,7 @@ import lombok.Data;
 @Table(name = "items")
 public class Item {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "owner_id", nullable = false)

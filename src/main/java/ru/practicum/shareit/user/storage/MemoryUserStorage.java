@@ -14,7 +14,7 @@ import java.util.Optional;
 public class MemoryUserStorage implements UserStorage {
     private final HashMap<Long, User> users = new HashMap<>();
 
-    public Collection<User> get() {
+    public Collection<User> getAllUsers() {
         return users.values();
     }
 
@@ -28,18 +28,15 @@ public class MemoryUserStorage implements UserStorage {
                 .findFirst();
     }
 
-    public Optional<User> create(User user) {
+    public User create(User user) {
         user.setId(Helper.nextId(users));
         users.put(user.getId(), user);
-        return Optional.of(user);
+        return user;
     }
 
-    public Optional<User> update(Long id, User user) {
-        if (find(id).isEmpty()) {
-            return Optional.empty();
-        }
+    public User update(Long id, User user) {
         users.put(id, user);
-        return Optional.of(user);
+        return user;
     }
 
     public void delete(User user) {

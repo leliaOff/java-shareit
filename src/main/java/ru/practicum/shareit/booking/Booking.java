@@ -9,6 +9,7 @@ import java.time.Instant;
 @Table(name = "bookings")
 public class Booking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "item_id", nullable = false)

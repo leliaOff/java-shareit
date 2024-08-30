@@ -6,15 +6,15 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface UserStorage {
-    Collection<User> get();
+    Collection<User> getAllUsers();
 
     Optional<User> find(Long id);
 
     Optional<User> find(String email);
 
-    Optional<User> create(User user);
+    User create(User user);
 
-    Optional<User> update(Long id, User user);
+    User update(Long id, User user);
 
     void delete(User user);
 }

@@ -17,25 +17,25 @@ public class DbItemStorage implements ItemStorage {
         this.itemRepository = itemRepository;
     }
 
-    public Collection<Item> get(Long ownerId) {
-        return itemRepository.get(ownerId);
+    public Collection<Item> getAllItems(Long ownerId) {
+        return itemRepository.findByOwnerId(ownerId);
     }
 
     public Collection<Item> search(String text) {
-        return itemRepository.search(text);
+        return itemRepository.findByNameContainingOrDescriptionContaining(text, text);
     }
 
     public Optional<Item> find(Long id) {
-        return itemRepository.find(id);
+        return itemRepository.findById(id);
     }
 
-    public Optional<Item> create(Item item) {
-        return itemRepository.create(item);
+    public Item create(Item item) {
+        return itemRepository.save(item);
     }
 
-    public Optional<Item> update(Long id, Item item) {
+    public Item update(Long id, Item item) {
         item.setId(id);
-        return itemRepository.update(item);
+        return itemRepository.save(item);
     }
 
     public void delete(Item item) {
