@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ItemService {
-    @Qualifier("memoryItemStorage")
+    @Qualifier("dbItemStorage")
     private final ItemStorage storage;
 
     private final ItemValidator itemValidator;
 
     @Autowired
-    ItemService(@Qualifier("memoryItemStorage") ItemStorage storage, ItemValidator itemValidator) {
+    ItemService(@Qualifier("dbItemStorage") ItemStorage storage, ItemValidator itemValidator) {
         this.storage = storage;
         this.itemValidator = itemValidator;
     }

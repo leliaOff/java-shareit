@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class UserService {
-    @Qualifier("memoryUserStorage")
+    @Qualifier("dbUserStorage")
     private final UserStorage storage;
 
     private final UserValidator validator;
 
     @Autowired
-    UserService(@Qualifier("memoryUserStorage") UserStorage storage, UserValidator validator) {
+    UserService(@Qualifier("dbUserStorage") UserStorage storage, UserValidator validator) {
         this.storage = storage;
         this.validator = validator;
     }

@@ -3,19 +3,17 @@ DROP TABLE IF EXISTS items CASCADE;
 
 CREATE TABLE IF NOT EXISTS users
 (
-    id bigint auto_increment,
-    email varchar NOT NULL,
-    name varchar NOT NULL,
-    CONSTRAINT users_pk PRIMARY KEY (id)
+    id bigserial not null constraint users_pk primary key,
+    email varchar not null,
+    name varchar not null,
+    CONSTRAINT UQ_USER_EMAIL UNIQUE (email)
 );
 
 CREATE TABLE IF NOT EXISTS items
 (
-    id bigint auto_increment,
-    owner_id bigint NOT NULL,
-    name varchar NOT NULL,
+    id bigserial not null constraint items_pk primary key,
+    owner_id bigint not null constraint items_users_id_fk references users,
+    name varchar not null,
     description text,
-    available boolean default(false),
-    CONSTRAINT items_pk PRIMARY KEY (id),
-    CONSTRAINT items_users_id_fk FOREIGN KEY (owner_id) REFERENCES users (id)
+    available boolean default(false)
 );
