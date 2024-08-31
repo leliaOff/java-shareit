@@ -6,7 +6,6 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -23,7 +22,7 @@ public class DbUserStorage implements UserStorage {
     }
 
     public Optional<User> find(Long id) {
-        Optional<User> user =  userRepository.findById(id);
+        Optional<User> user = userRepository.findById(id);
         return userRepository.findById(id);
     }
 

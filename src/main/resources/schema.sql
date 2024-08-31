@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS items CASCADE;
+DROP TABLE IF EXISTS bookings CASCADE;
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -15,5 +16,16 @@ CREATE TABLE IF NOT EXISTS items
     owner_id bigint not null constraint items_users_id_fk references users,
     name varchar not null,
     description text,
-    available boolean default(false)
+    available boolean default false
+);
+
+CREATE TABLE IF NOT EXISTS bookings
+(
+    id bigserial not null constraint bookings_pk primary key,
+    item_id bigint not null constraint bookings_items_id_fk references items,
+    user_id bigint not null constraint bookings_users_id_fk references users,
+    date_start timestamp not null,
+    date_end timestamp not null,
+    status varchar default 'WAITING',
+    review text
 );
