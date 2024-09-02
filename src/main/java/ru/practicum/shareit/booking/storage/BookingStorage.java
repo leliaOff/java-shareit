@@ -18,4 +18,6 @@ public interface BookingStorage {
     Booking approved(Booking booking);
 
     Booking rejected(Booking booking);
+
+    Collection<Booking> findApprovedUserItemBooking(Long itemId, Long userId);
 }

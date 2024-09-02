@@ -75,4 +75,8 @@ public class DbBookingStorage implements BookingStorage {
         booking.setStatus(BookingStatus.REJECTED);
         return bookingRepository.save(booking);
     }
+
+    public Collection<Booking> findApprovedUserItemBooking(Long itemId, Long userId) {
+        return bookingRepository.findByItemIdAndUserIdAndStatus(itemId, userId, BookingStatus.APPROVED);
+    }
 }

@@ -11,6 +11,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     Collection<Booking> findByUserIdAndStatus(Long userId, BookingStatus bookingState);
 
+    Collection<Booking> findByItemIdAndUserIdAndStatus(Long itemId, Long userId, BookingStatus bookingState);
+
     Collection<Booking> findByUserIdAndStartLessThanEqualAndEndGreaterThan(Long userId, Instant now, Instant now1);
 
     Collection<Booking> findByUserIdAndEndLessThanEqual(Long userId, Instant now);
