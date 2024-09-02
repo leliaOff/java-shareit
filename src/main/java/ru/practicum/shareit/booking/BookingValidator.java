@@ -9,7 +9,7 @@ import ru.practicum.shareit.base.exception.ValidationException;
 import ru.practicum.shareit.base.helpers.DateTimeHelper;
 import ru.practicum.shareit.booking.dto.RequestBookingDto;
 import ru.practicum.shareit.booking.storage.BookingStorage;
-import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.storage.UserStorage;

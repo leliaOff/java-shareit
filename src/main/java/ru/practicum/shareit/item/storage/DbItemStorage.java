@@ -2,11 +2,15 @@ package ru.practicum.shareit.item.storage;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.ItemRepository;
+import ru.practicum.shareit.item.model.ItemBookingDate;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @Qualifier("dbItemStorage")
@@ -17,12 +21,15 @@ public class DbItemStorage implements ItemStorage {
         this.itemRepository = itemRepository;
     }
 
-    public Collection<Item> getAllItems(Long ownerId) {
-        return itemRepository.findByOwnerId(ownerId);
+    public Collection<ItemBookingDate> getAllItems(Long ownerId) {
+        Collection<Map<String, Object>> result = itemRepository.getItemsBookingDate(ownerId);
+        return result.stream()
+                .map(ItemBookingDate::new)
+                .collect(Collectors.toList());
     }
 
     public Collection<Item> search(String text) {
-        return itemRepository.findByNameContainingOrDescriptionContaining(text, text);
+        return itemRepository.findByNameContainingIgnoreCaseAndAvailable(text, true);
     }
 
     public Optional<Item> find(Long id) {

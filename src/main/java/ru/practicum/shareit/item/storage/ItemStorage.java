@@ -1,12 +1,13 @@
 package ru.practicum.shareit.item.storage;
 
-import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.model.ItemBookingDate;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public interface ItemStorage {
-    Collection<Item> getAllItems(Long ownerId);
+    Collection<ItemBookingDate> getAllItems(Long ownerId);
 
     Collection<Item> search(String text);
 
