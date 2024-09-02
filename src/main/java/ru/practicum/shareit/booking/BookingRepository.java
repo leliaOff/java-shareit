@@ -11,11 +11,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     Collection<Booking> findByUserIdAndStatus(Long userId, BookingStatus bookingState);
 
-    Collection<Booking> findByItemIdAndUserIdAndStatus(Long itemId, Long userId, BookingStatus bookingState);
+    Collection<Booking> findByItemIdAndUserIdAndStatusAndEndLessThan(Long itemId, Long userId, BookingStatus bookingState, Instant now);
 
     Collection<Booking> findByUserIdAndStartLessThanEqualAndEndGreaterThan(Long userId, Instant now, Instant now1);
 
-    Collection<Booking> findByUserIdAndEndLessThanEqual(Long userId, Instant now);
+    Collection<Booking> findByUserIdAndEndLessThan(Long userId, Instant now);
 
     Collection<Booking> findByUserIdAndStartGreaterThan(Long userId, Instant now);
 }

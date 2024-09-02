@@ -19,5 +19,5 @@ public interface BookingStorage {
 
     Booking rejected(Booking booking);
 
-    Collection<Booking> findApprovedUserItemBooking(Long itemId, Long userId);
+    Collection<Booking> findApprovedUserItemPastBooking(Long itemId, Long userId);
 }

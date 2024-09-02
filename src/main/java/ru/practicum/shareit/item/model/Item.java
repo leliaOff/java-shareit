@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -24,4 +27,9 @@ public class Item {
     private String description;
 
     private boolean available;
+
+    @ElementCollection
+    @CollectionTable(name = "comments", joinColumns = @JoinColumn(name = "item_id"))
+    @Column(name = "text")
+    private Collection<String> comments = new ArrayList<>();
 }

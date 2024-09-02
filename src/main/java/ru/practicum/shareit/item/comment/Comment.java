@@ -1,8 +1,9 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.item.comment;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import java.time.Instant;

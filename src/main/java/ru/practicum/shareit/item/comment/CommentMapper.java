@@ -1,9 +1,8 @@
-package ru.practicum.shareit.item.mapper;
+package ru.practicum.shareit.item.comment;
 
 import ru.practicum.shareit.base.helpers.DateTimeHelper;
-import ru.practicum.shareit.item.dto.CommentDto;
-import ru.practicum.shareit.item.dto.RequestCommentDto;
-import ru.practicum.shareit.item.model.Comment;
+import ru.practicum.shareit.item.comment.dto.CommentDto;
+import ru.practicum.shareit.item.comment.dto.RequestCommentDto;
 
 public class CommentMapper {
     public static Comment requestToModel(RequestCommentDto dto) {

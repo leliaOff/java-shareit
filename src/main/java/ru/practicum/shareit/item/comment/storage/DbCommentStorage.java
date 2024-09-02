@@ -1,9 +1,9 @@
-package ru.practicum.shareit.item.storage;
+package ru.practicum.shareit.item.comment.storage;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.item.model.Comment;
-import ru.practicum.shareit.item.repository.CommentRepository;
+import ru.practicum.shareit.item.comment.Comment;
+import ru.practicum.shareit.item.comment.CommentRepository;
 
 @Component
 @Qualifier("dbCommentStorage")

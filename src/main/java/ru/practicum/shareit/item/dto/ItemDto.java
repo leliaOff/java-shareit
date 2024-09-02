@@ -2,6 +2,8 @@ package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
 
+import java.util.Collection;
+
 @Data
 public class ItemDto {
     private Long id;
@@ -11,4 +13,5 @@ public class ItemDto {
     private Boolean available;
     private String lastBooking;
     private String nextBooking;
+    private Collection<String> comments;
 }

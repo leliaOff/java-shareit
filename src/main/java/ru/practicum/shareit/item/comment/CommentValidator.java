@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.validator;
+package ru.practicum.shareit.item.comment;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +8,7 @@ import ru.practicum.shareit.base.exception.NotFoundException;
 import ru.practicum.shareit.base.exception.ValidationException;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.storage.BookingStorage;
-import ru.practicum.shareit.item.dto.RequestCommentDto;
-import ru.practicum.shareit.item.mapper.CommentMapper;
-import ru.practicum.shareit.item.model.Comment;
+import ru.practicum.shareit.item.comment.dto.RequestCommentDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.User;
@@ -60,10 +58,10 @@ public class CommentValidator {
 
     private User checkCommentator(Item item, Long userId) {
         User user = checkUserExists(userId);
-        Collection<Booking> bookings = bookingStorage.findApprovedUserItemBooking(item.getId(), userId);
+        Collection<Booking> bookings = bookingStorage.findApprovedUserItemPastBooking(item.getId(), userId);
         if (bookings.isEmpty()) {
-            log.error("Нельзя оставить отзыв на вещь, которая не была в аренде");
-            throw new NotFoundException("Нельзя оставить отзыв на вещь, которая не была в аренде");
+            log.error("Нельзя оставить отзыв на вещь, которая не была в аренде или срок аренды еще не окончен");
+            throw new ValidationException("Нельзя оставить отзыв на вещь, которая не была в аренде или срок аренды еще не окончен");
         }
         return user;
     }

@@ -25,7 +25,7 @@ public class DbBookingStorage implements BookingStorage {
             return bookingRepository.findByUserIdAndStartLessThanEqualAndEndGreaterThan(userId, Instant.now(), Instant.now());
         }
         if (state.equals(BookingFilterState.PAST)) { // завершённые
-            return bookingRepository.findByUserIdAndEndLessThanEqual(userId, Instant.now());
+            return bookingRepository.findByUserIdAndEndLessThan(userId, Instant.now());
         }
         if (state.equals(BookingFilterState.FUTURE)) { // будущие
             return bookingRepository.findByUserIdAndStartGreaterThan(userId, Instant.now());
@@ -44,7 +44,7 @@ public class DbBookingStorage implements BookingStorage {
             return bookingRepository.findByUserIdAndStartLessThanEqualAndEndGreaterThan(ownerId, Instant.now(), Instant.now());
         }
         if (state.equals(BookingFilterState.PAST)) { // завершённые
-            return bookingRepository.findByUserIdAndEndLessThanEqual(ownerId, Instant.now());
+            return bookingRepository.findByUserIdAndEndLessThan(ownerId, Instant.now());
         }
         if (state.equals(BookingFilterState.FUTURE)) { // будущие
             return bookingRepository.findByUserIdAndStartGreaterThan(ownerId, Instant.now());
@@ -76,7 +76,7 @@ public class DbBookingStorage implements BookingStorage {
         return bookingRepository.save(booking);
     }
 
-    public Collection<Booking> findApprovedUserItemBooking(Long itemId, Long userId) {
-        return bookingRepository.findByItemIdAndUserIdAndStatus(itemId, userId, BookingStatus.APPROVED);
+    public Collection<Booking> findApprovedUserItemPastBooking(Long itemId, Long userId) {
+        return bookingRepository.findByItemIdAndUserIdAndStatusAndEndLessThan(itemId, userId, BookingStatus.APPROVED, Instant.now());
     }
 }

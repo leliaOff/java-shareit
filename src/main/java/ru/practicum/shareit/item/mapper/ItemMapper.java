@@ -13,8 +13,10 @@ public class ItemMapper {
         dto.setName(item.getName());
         dto.setDescription(item.getDescription());
         dto.setAvailable(item.isAvailable());
+        dto.setComments(item.getComments());
         return dto;
     }
+
     public static ItemDto toDto(ItemBookingDate item) {
         ItemDto dto = new ItemDto();
         dto.setId(item.getId());
