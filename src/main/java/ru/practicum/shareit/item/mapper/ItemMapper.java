@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.mapper;
 
 import ru.practicum.shareit.base.helpers.DateTimeHelper;
 import ru.practicum.shareit.item.dto.ItemDto;
