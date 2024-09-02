@@ -22,8 +22,8 @@ public class ItemMapper {
         dto.setName(item.getName());
         dto.setDescription(item.getDescription());
         dto.setAvailable(item.isAvailable());
-        dto.setLast(DateTimeHelper.toString(item.getLast()));
-        dto.setNearest(DateTimeHelper.toString(item.getNearest()));
+        dto.setLastBooking(DateTimeHelper.toString(item.getLast()));
+        dto.setNextBooking(DateTimeHelper.toString(item.getNearest()));
         return dto;
     }
 
