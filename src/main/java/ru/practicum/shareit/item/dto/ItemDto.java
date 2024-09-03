@@ -1,10 +1,12 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 
-@Data
+@Getter
+@Setter
 public class ItemDto {
     private Long id;
     private Long ownerId;

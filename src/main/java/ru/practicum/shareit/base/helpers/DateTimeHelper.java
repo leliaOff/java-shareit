@@ -9,11 +9,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class DateTimeHelper {
+    private static final String pattern = "yyyy-MM-dd'T'HH:mm:ss";
+
     public static Instant toInstant(String input) {
         if (input == null) {
             return null;
         }
-        String pattern = "yyyy-MM-dd'T'HH:mm:ss";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
         LocalDateTime localDateTime = LocalDateTime.parse(input, dateTimeFormatter);
         ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
@@ -32,7 +33,7 @@ public class DateTimeHelper {
             return null;
         }
         return DateTimeFormatter
-                .ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+                .ofPattern(pattern)
                 .withZone(ZoneId.systemDefault())
                 .format(instant);
     }

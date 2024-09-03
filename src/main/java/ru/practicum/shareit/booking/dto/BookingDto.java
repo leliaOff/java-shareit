@@ -1,12 +1,14 @@
 package ru.practicum.shareit.booking.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import ru.practicum.shareit.booking.enums.BookingStatus;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class BookingDto {
     private Long id;

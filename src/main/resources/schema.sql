@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS users
     name varchar not null,
     CONSTRAINT UQ_USER_EMAIL UNIQUE (email)
 );
+create index users_email_index on users (email);
 
 CREATE TABLE IF NOT EXISTS items
 (
@@ -19,6 +20,9 @@ CREATE TABLE IF NOT EXISTS items
     description text,
     available boolean default false
 );
+create index items_owner_id_index on items (owner_id);
+create index items_name_index on items (name);
+create index items_available_index on items (available);
 
 CREATE TABLE IF NOT EXISTS bookings
 (
@@ -30,6 +34,8 @@ CREATE TABLE IF NOT EXISTS bookings
     status varchar default 'WAITING',
     review text
 );
+create index bookings_item_id_index on bookings (item_id);
+create index bookings_user_id_index on bookings (user_id);
 
 CREATE TABLE IF NOT EXISTS comments
 (
@@ -39,3 +45,4 @@ CREATE TABLE IF NOT EXISTS comments
     text text not null,
     created timestamp not null
 );
+create index comments_item_id_index on comments (item_id);

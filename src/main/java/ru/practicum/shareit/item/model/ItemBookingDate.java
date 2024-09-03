@@ -1,13 +1,15 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import ru.practicum.shareit.base.helpers.DateTimeHelper;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Map;
 
-@Data
+@Getter
+@Setter
 public class ItemBookingDate {
     private Long id;
 
