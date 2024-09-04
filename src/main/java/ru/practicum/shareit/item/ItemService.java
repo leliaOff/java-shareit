@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.base.exception.InternalServerException;
 import ru.practicum.shareit.base.exception.NotFoundException;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
 
 import java.util.ArrayList;
@@ -15,20 +17,20 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ItemService {
-    @Qualifier("memoryItemStorage")
+    @Qualifier("dbItemStorage")
     private final ItemStorage storage;
 
     private final ItemValidator itemValidator;
 
     @Autowired
-    ItemService(@Qualifier("memoryItemStorage") ItemStorage storage, ItemValidator itemValidator) {
+    ItemService(@Qualifier("dbItemStorage") ItemStorage storage, ItemValidator itemValidator) {
         this.storage = storage;
         this.itemValidator = itemValidator;
     }
 
-    public Collection<ItemDto> get(Long ownerId) {
+    public Collection<ItemDto> getAllItems(Long ownerId) {
         return storage
-                .get(ownerId)
+                .getAllItems(ownerId)
                 .stream()
                 .map(ItemMapper::toDto)
                 .collect(Collectors.toList());
@@ -56,20 +58,14 @@ public class ItemService {
         itemValidator.check(ownerId, request);
         Item item = ItemMapper.toModel(request);
         item.setOwnerId(ownerId);
-        item = storage.create(item).orElseThrow(() -> {
-            log.error("Не удалось создать вещь");
-            return new InternalServerException("Не удалось создать вещь");
-        });
+        item = storage.create(item);
         log.info("Вещь добавлена (ID={})", item.getId());
         return ItemMapper.toDto(item);
     }
 
     public ItemDto update(Long ownerId, Long id, ItemDto request) {
         Item currentItem = itemValidator.check(id, ownerId);
-        Item item = storage.update(id, ItemMapper.mergeToModel(currentItem, request)).orElseThrow(() -> {
-            log.error("Вещь не найдена (ID={})", id);
-            return new NotFoundException("Вещь не найдена");
-        });
+        Item item = storage.update(id, ItemMapper.mergeToModel(currentItem, request));
         log.info("Вещь изменена (ID={})", id);
         return ItemMapper.toDto(item);
     }

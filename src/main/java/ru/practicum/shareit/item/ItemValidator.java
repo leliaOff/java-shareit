@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.base.exception.NotFoundException;
 import ru.practicum.shareit.base.exception.ValidationException;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.storage.UserStorage;
@@ -15,14 +17,14 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class ItemValidator {
-    @Qualifier("memoryItemStorage")
+    @Qualifier("dbItemStorage")
     private final ItemStorage itemStorage;
-    @Qualifier("memoryUserStorage")
+    @Qualifier("dbUserStorage")
     private final UserStorage userStorage;
 
     @Autowired
-    ItemValidator(@Qualifier("memoryItemStorage") ItemStorage itemStorage,
-                  @Qualifier("memoryUserStorage") UserStorage userStorage) {
+    ItemValidator(@Qualifier("dbItemStorage") ItemStorage itemStorage,
+                  @Qualifier("dbUserStorage") UserStorage userStorage) {
         this.itemStorage = itemStorage;
         this.userStorage = userStorage;
     }

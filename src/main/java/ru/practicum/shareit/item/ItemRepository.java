@@ -1,72 +1,36 @@
 package ru.practicum.shareit.item;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.base.BaseRepository;
-import ru.practicum.shareit.base.exception.InternalServerException;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import ru.practicum.shareit.item.model.Item;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Map;
 
-@Repository
-@Slf4j
-public class ItemRepository extends BaseRepository<Item> {
+public interface ItemRepository extends JpaRepository<Item, Long> {
+    Collection<Item> findByOwnerId(Long ownerId);
 
-    public ItemRepository(JdbcTemplate jdbc, RowMapper<Item> mapper) {
-        super(jdbc, mapper);
-    }
+    Collection<Item> findByNameContainingIgnoreCaseAndAvailable(String text, Boolean available);
 
-    public Collection<Item> get(Long ownerId) {
-        return get("SELECT * FROM items WHERE owner_id = ?", ownerId);
-    }
-
-    public Collection<Item> search(String text) {
-        return get("SELECT * FROM items WHERE (name ILIKE ? OR description ILIKE ?) AND available = true", '%' + text + '%', '%' + text + '%');
-    }
-
-    public Optional<Item> find(Long id) {
-        return find("SELECT * FROM items WHERE id = ?", id);
-    }
-
-    public Optional<Item> create(Item item) {
-        try {
-            Long id = create(
-                    "INSERT INTO items(owner_id, name, description, available) VALUES (?, ?, ?, ?)",
-                    item.getOwnerId(),
-                    item.getName(),
-                    item.getDescription(),
-                    item.isAvailable()
-            );
-            item.setId(id);
-        } catch (InternalServerException exception) {
-            log.error("При добавлении вещи произошла ошибка: " + exception.getMessage());
-            return Optional.empty();
-        }
-        return Optional.of(item);
-    }
-
-    public Optional<Item> update(Item item) {
-        try {
-            update(
-                    "UPDATE items SET name = ?, description = ?, available = ? WHERE id = ?",
-                    item.getName(),
-                    item.getDescription(),
-                    item.isAvailable(),
-                    item.getId()
-            );
-        } catch (InternalServerException exception) {
-            log.error("При изменении вещи произошла ошибка: " + exception.getMessage());
-            return Optional.empty();
-        }
-        return Optional.of(item);
-    }
-
-    public void delete(Item item) {
-        delete(
-                "DELETE FROM items WHERE id = ?",
-                item.getId()
-        );
-    }
+    @Query(value = "SELECT items.id, " +
+            "items.owner_id, " +
+            "items.name, " +
+            "items.description, " +
+            "items.available, " +
+            "last_booking.last_booking_date as last, " +
+            "nearest_booking.nearest_booking_date as nearest " +
+            "FROM items " +
+            "LEFT JOIN ( " +
+            "SELECT item_id, " +
+            "max(date_start) as last_booking_date " +
+            "FROM bookings " +
+            "GROUP BY item_id) as last_booking ON last_booking.item_id = items.id " +
+            "LEFT JOIN ( " +
+            "SELECT item_id, " +
+            "min(date_start) as nearest_booking_date " +
+            "FROM bookings " +
+            "WHERE date_start >= now() " +
+            "GROUP BY item_id) as nearest_booking ON nearest_booking.item_id = items.id " +
+            "WHERE owner_id = ?1", nativeQuery = true)
+    Collection<Map<String, Object>> getItemsBookingDate(Long ownerId);
 }

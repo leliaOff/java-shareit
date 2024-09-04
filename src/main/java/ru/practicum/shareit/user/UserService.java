@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.base.exception.InternalServerException;
 import ru.practicum.shareit.base.exception.NotFoundException;
 import ru.practicum.shareit.base.exception.ValidationException;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.Collection;
@@ -17,20 +18,20 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class UserService {
-    @Qualifier("memoryUserStorage")
+    @Qualifier("dbUserStorage")
     private final UserStorage storage;
 
     private final UserValidator validator;
 
     @Autowired
-    UserService(@Qualifier("memoryUserStorage") UserStorage storage, UserValidator validator) {
+    UserService(@Qualifier("dbUserStorage") UserStorage storage, UserValidator validator) {
         this.storage = storage;
         this.validator = validator;
     }
 
-    public Collection<UserDto> get() {
+    public Collection<UserDto> getAllUsers() {
         return storage
-                .get()
+                .getAllUsers()
                 .stream()
                 .map(UserMapper::toDto)
                 .collect(Collectors.toList());
@@ -53,10 +54,7 @@ public class UserService {
             throw new ValidationException("Не удалось создать пользователя: email [" + request.getEmail() + "] недействительный");
         }
         User user = UserMapper.toModel(request);
-        user = storage.create(user).orElseThrow(() -> {
-            log.error("Не удалось создать пользователя");
-            return new InternalServerException("Не удалось создать пользователя");
-        });
+        user = storage.create(user);
         log.info("Пользователь добавлен (ID={})", user.getId());
         return UserMapper.toDto(user);
     }
@@ -76,10 +74,7 @@ public class UserService {
             log.error("Пользователь не найден (ID={})", id);
             throw new NotFoundException("Пользователь не найден");
         }
-        User user = storage.update(id, UserMapper.mergeToModel(currentUser.get(), request)).orElseThrow(() -> {
-            log.error("Пользователь не найден (ID={})", id);
-            return new NotFoundException("Пользователь не найден");
-        });
+        User user = storage.update(id, UserMapper.mergeToModel(currentUser.get(), request));
         log.info("Пользователь изменен (ID={})", id);
         return UserMapper.toDto(user);
     }

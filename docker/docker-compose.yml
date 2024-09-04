@@ -1,0 +1,40 @@
+version: "3.8"
+networks:
+    shareit:
+        driver: bridge
+services:
+    app:
+        build:
+            context: ./
+            dockerfile: ./_docker/app/Dockerfile
+        image: shareit-app
+        tty: true
+        container_name: shareit-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./_docker/app/php.ini:/usr/local/etc/php/php.ini
+            - ./:/var/www
+        networks:
+            - shareit
+    db:
+        image: postgres:13
+        container_name: shareit-db
+        restart: unless-stopped
+        environment:
+            PGDATA: /var/lib/postgresql/data
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: java-shareit
+            POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+            - 5433:5432
+        volumes:
+            - 'shareit-pgdata:/var/lib/postgresql/data'
+            - './temp:/temp'
+        networks:
+            - shareit
+volumes:
+    shareit-pgdata:
+        external: true
+

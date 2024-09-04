@@ -1,4 +1,9 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.mapper;
+
+import ru.practicum.shareit.base.helpers.DateTimeHelper;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.model.ItemBookingDate;
 
 public class ItemMapper {
     public static ItemDto toDto(Item item) {
@@ -8,6 +13,19 @@ public class ItemMapper {
         dto.setName(item.getName());
         dto.setDescription(item.getDescription());
         dto.setAvailable(item.isAvailable());
+        dto.setComments(item.getComments());
+        return dto;
+    }
+
+    public static ItemDto toDto(ItemBookingDate item) {
+        ItemDto dto = new ItemDto();
+        dto.setId(item.getId());
+        dto.setOwnerId(item.getOwnerId());
+        dto.setName(item.getName());
+        dto.setDescription(item.getDescription());
+        dto.setAvailable(item.isAvailable());
+        dto.setLastBooking(DateTimeHelper.toString(item.getLast()));
+        dto.setNextBooking(DateTimeHelper.toString(item.getNearest()));
         return dto;
     }
 

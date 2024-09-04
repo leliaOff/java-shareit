@@ -17,25 +17,26 @@ public class DbUserStorage implements UserStorage {
         this.userRepository = userRepository;
     }
 
-    public Collection<User> get() {
-        return userRepository.get();
+    public Collection<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public Optional<User> find(Long id) {
-        return userRepository.find(id);
+        Optional<User> user = userRepository.findById(id);
+        return userRepository.findById(id);
     }
 
     public Optional<User> find(String email) {
-        return userRepository.find(email);
+        return userRepository.findByEmail(email);
     }
 
-    public Optional<User> create(User user) {
-        return userRepository.create(user);
+    public User create(User user) {
+        return userRepository.save(user);
     }
 
-    public Optional<User> update(Long id, User user) {
+    public User update(Long id, User user) {
         user.setId(id);
-        return userRepository.update(user);
+        return userRepository.save(user);
     }
 
     public void delete(User user) {

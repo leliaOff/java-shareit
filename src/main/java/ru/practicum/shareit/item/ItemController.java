@@ -3,6 +3,10 @@ package ru.practicum.shareit.item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.comment.CommentService;
+import ru.practicum.shareit.item.comment.dto.CommentDto;
+import ru.practicum.shareit.item.comment.dto.RequestCommentDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 
 import java.util.Collection;
 
@@ -11,15 +15,17 @@ import java.util.Collection;
 @RequestMapping("/items")
 public class ItemController {
     private final ItemService itemService;
+    private final CommentService commentService;
 
     @Autowired
-    ItemController(ItemService itemService) {
+    ItemController(ItemService itemService, CommentService commentService) {
         this.itemService = itemService;
+        this.commentService = commentService;
     }
 
     @GetMapping
-    public Collection<ItemDto> get(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
-        return itemService.get(ownerId);
+    public Collection<ItemDto> getAllItems(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+        return itemService.getAllItems(ownerId);
     }
 
     @GetMapping("/search")
@@ -49,5 +55,12 @@ public class ItemController {
     public void delete(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                        @PathVariable long id) {
         itemService.delete(ownerId, id);
+    }
+
+    @PostMapping("/{id}/comment")
+    public CommentDto create(@RequestHeader("X-Sharer-User-Id") Long userId,
+                             @PathVariable Long id,
+                             @RequestBody RequestCommentDto request) {
+        return commentService.create(id, userId, request);
     }
 }

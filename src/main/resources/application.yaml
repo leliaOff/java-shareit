@@ -1,10 +1,10 @@
+server:
+  port: 8090
 spring:
   jpa:
-    hibernate:
-      ddl-auto: none
+    show-sql: true
     properties:
-      hibernate:
-        format_sql: true
+      hibernate.jdbc.time_zone: UTC
   output:
     ansi:
       enabled: "ALWAYS"
@@ -12,16 +12,13 @@ spring:
     init:
       mode: always
   datasource:
-    url: jdbc:h2:file:./db/java-shareit
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
-  h2:
-    console:
-      enabled: true
+    username: "postgres"
+    password: "postgres"
+    url: "jdbc:postgresql://localhost:5433/java-shareit"
+    driver-class-name: "org.postgresql.Driver"
 
 logging.level:
-  ru.yandex.practicum.filmorate: TRACE
+  ru.yandex.practicum.java-shareit: TRACE
   org:
     zalando.logbook: TRACE
   springframework:
