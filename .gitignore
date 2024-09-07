@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/db/java-shareit.mv.db
+/db/java-shareit.trace.db
