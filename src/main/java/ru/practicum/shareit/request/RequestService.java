@@ -53,7 +53,8 @@ public class RequestService {
     }
 
     public RequestDto create(Long userId, RequestRequestDto dto) {
-        Request request = validator.check(dto);
+        Request request = validator.check(userId, dto);
+        request.setUserId(userId);
         request = storage.create(request);
         log.info("Создан новый запрос (ID={})", request.getId());
         return RequestMapper.toDto(request);

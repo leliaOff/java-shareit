@@ -31,8 +31,6 @@ public class RequestMapper {
     }
 
     public static Request toModel(RequestRequestDto dto) {
-        Request model = new Request();
-        model.setDescription(dto.getDescription());
-        return model;
+        return new Request(dto.getDescription());
     }
 }

@@ -7,6 +7,7 @@ import ru.practicum.shareit.item.comment.CommentService;
 import ru.practicum.shareit.item.comment.dto.CommentDto;
 import ru.practicum.shareit.item.comment.dto.RequestCommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.RequestItemDto;
 
 import java.util.Collection;
 
@@ -40,14 +41,14 @@ public class ItemController {
 
     @PostMapping
     public ItemDto create(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                          @RequestBody ItemDto request) {
+                          @RequestBody RequestItemDto request) {
         return itemService.create(ownerId, request);
     }
 
     @PatchMapping("/{id}")
     public ItemDto update(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                           @PathVariable long id,
-                          @RequestBody ItemDto request) {
+                          @RequestBody RequestItemDto request) {
         return itemService.update(ownerId, id, request);
     }
 

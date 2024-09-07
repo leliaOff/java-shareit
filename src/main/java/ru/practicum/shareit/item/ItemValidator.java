@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.base.exception.NotFoundException;
 import ru.practicum.shareit.base.exception.ValidationException;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.RequestItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
+import ru.practicum.shareit.request.model.Request;
+import ru.practicum.shareit.request.storage.RequestStorage;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.storage.UserStorage;
 
@@ -21,19 +23,24 @@ public class ItemValidator {
     private final ItemStorage itemStorage;
     @Qualifier("dbUserStorage")
     private final UserStorage userStorage;
+    @Qualifier("dbRequestStorage")
+    private final RequestStorage requestStorage;
 
     @Autowired
     ItemValidator(@Qualifier("dbItemStorage") ItemStorage itemStorage,
-                  @Qualifier("dbUserStorage") UserStorage userStorage) {
+                  @Qualifier("dbUserStorage") UserStorage userStorage,
+                  @Qualifier("dbRequestStorage") RequestStorage requestStorage) {
         this.itemStorage = itemStorage;
         this.userStorage = userStorage;
+        this.requestStorage = requestStorage;
     }
 
-    public void check(Long ownerId, ItemDto request) {
+    public void check(Long ownerId, RequestItemDto request) {
         checkOwnerExists(ownerId);
         checkName(request);
         checkDescription(request);
         checkAvailable(request);
+        checkRequestId(request);
     }
 
     public Item check(Long itemId, Long ownerId) {
@@ -66,24 +73,35 @@ public class ItemValidator {
         }
     }
 
-    private void checkName(ItemDto request) {
+    private void checkName(RequestItemDto request) {
         if (request.getName() == null || request.getName().isEmpty()) {
             log.error("Необходимо указать наименование вещи");
             throw new ValidationException("Необходимо указать наименование вещи");
         }
     }
 
-    private void checkDescription(ItemDto request) {
+    private void checkDescription(RequestItemDto request) {
         if (request.getDescription() == null || request.getDescription().isEmpty()) {
             log.error("Необходимо указать описание вещи");
             throw new ValidationException("Необходимо указать описание вещи");
         }
     }
 
-    private void checkAvailable(ItemDto request) {
+    private void checkAvailable(RequestItemDto request) {
         if (request.getAvailable() == null) {
             log.error("Необходимо указать доступность вещи");
             throw new ValidationException("Необходимо указать доступность вещи");
+        }
+    }
+
+    private void checkRequestId(RequestItemDto request) {
+        if (request.getRequestId() == null) {
+            return;
+        }
+        Optional<Request> optional = requestStorage.find(request.getRequestId());
+        if (optional.isEmpty()) {
+            log.error("Запрос не найден (ID={})", request.getRequestId());
+            throw new NotFoundException("Запрос не найден (ID={})");
         }
     }
 }

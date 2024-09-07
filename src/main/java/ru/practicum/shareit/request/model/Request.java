@@ -27,9 +27,16 @@ public class Request {
     @Column(nullable = false)
     private Instant created;
 
-    @ManyToMany
-    @JoinTable(name = "request_items",
-            joinColumns = @JoinColumn(name = "request_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"))
+    @OneToMany
+    @JoinColumn(name = "request_id")
     private Set<Item> items = new HashSet<Item>();
+
+    public Request() {
+        this.created = Instant.now();
+    }
+
+    public Request(String description) {
+        this.description = description;
+        this.created = Instant.now();
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.base.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.RequestItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
@@ -54,7 +55,7 @@ public class ItemService {
                 .orElseThrow(() -> new NotFoundException("Вещь не найдена"));
     }
 
-    public ItemDto create(Long ownerId, ItemDto request) {
+    public ItemDto create(Long ownerId, RequestItemDto request) {
         itemValidator.check(ownerId, request);
         Item item = ItemMapper.toModel(request);
         item.setOwnerId(ownerId);
@@ -63,7 +64,7 @@ public class ItemService {
         return ItemMapper.toDto(item);
     }
 
-    public ItemDto update(Long ownerId, Long id, ItemDto request) {
+    public ItemDto update(Long ownerId, Long id, RequestItemDto request) {
         Item currentItem = itemValidator.check(id, ownerId);
         Item item = storage.update(id, ItemMapper.mergeToModel(currentItem, request));
         log.info("Вещь изменена (ID={})", id);

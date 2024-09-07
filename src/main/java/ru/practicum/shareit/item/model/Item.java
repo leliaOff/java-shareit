@@ -34,4 +34,7 @@ public class Item {
     @CollectionTable(name = "comments", joinColumns = @JoinColumn(name = "item_id"))
     @Column(name = "text")
     private Collection<String> comments = new ArrayList<>();
+
+    @Column(name = "request_id")
+    private Long requestId;
 }
