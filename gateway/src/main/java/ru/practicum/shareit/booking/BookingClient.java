@@ -1,7 +1,5 @@
 package ru.practicum.shareit.booking;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -9,9 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-
-import ru.practicum.shareit.booking.dto.BookItemRequestDto;
-import ru.practicum.shareit.booking.dto.BookingState;
+import ru.practicum.shareit.booking.request.BookingRequest;
 import ru.practicum.shareit.client.BaseClient;
 
 @Service
@@ -28,21 +24,23 @@ public class BookingClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> getBookings(long userId, BookingState state, Integer from, Integer size) {
-        Map<String, Object> parameters = Map.of(
-                "state", state.name(),
-                "from", from,
-                "size", size
-        );
-        return get("?state={state}&from={from}&size={size}", userId, parameters);
+    public ResponseEntity<Object> getAllBookings(Long userId, BookingFilterState state) {
+        return get("?state=" + state, userId);
     }
 
-
-    public ResponseEntity<Object> bookItem(long userId, BookItemRequestDto requestDto) {
-        return post("", userId, requestDto);
+    public ResponseEntity<Object> getAllBookingsByOwner(Long ownerId, BookingFilterState state) {
+        return get("/owner?state=" + state, ownerId);
     }
 
-    public ResponseEntity<Object> getBooking(long userId, Long bookingId) {
-        return get("/" + bookingId, userId);
+    public ResponseEntity<Object> find(Long id, Long userId) {
+        return get("/" + id, userId);
+    }
+
+    public ResponseEntity<Object> create(Long userId, BookingRequest request) {
+        return post("", userId, request);
+    }
+
+    public ResponseEntity<Object> changeStatus(Long ownerId, Long id, boolean approved) {
+        return patch("/" + id + "?approved=" + (approved ? "true" : "false"), ownerId, null);
     }
 }
