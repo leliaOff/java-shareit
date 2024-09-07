@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Component
-@Qualifier("dbItemStorage")
+@Qualifier("dbBookingStorage")
 public class DbBookingStorage implements BookingStorage {
     private final BookingRepository bookingRepository;
 
