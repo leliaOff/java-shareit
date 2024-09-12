@@ -13,15 +13,15 @@ import ru.practicum.shareit.ShareItServer;
 import ru.practicum.shareit.base.DateTimeHelper;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.RequestBookingDto;
+import ru.practicum.shareit.helpers.ItemHelper;
+import ru.practicum.shareit.helpers.UserHelper;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.RequestItemDto;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -55,27 +55,20 @@ public class BookingServiceTest {
     }
 
     private UserDto createUser(String email, String name) {
-        UserDto user = new UserDto(null, email, name);
+        UserDto user = UserHelper.getUserDto(email, name);
         return userService.create(user);
     }
 
     private ItemDto createItem(UserDto user) {
-        RequestItemDto requestItemDto = new RequestItemDto();
-        requestItemDto.setName("Скарлетт О’Хара");
-        requestItemDto.setDescription("Скарлетт О’Хара не была красавицей, но мужчины вряд ли отдавали себе в этом отчет, если они, подобно близнецам Тарлтонам, становились жертвами ее чар. Очень уж причудливо сочетались в ее лице утонченные черты матери — местной аристократки французского происхождения — и крупные, выразительные черты отца — пышущего здоровьем ирландца");
-        requestItemDto.setAvailable(true);
+        RequestItemDto requestItemDto = ItemHelper.getRequestItemDto(
+                "Скарлетт О’Хара",
+                "Скарлетт О’Хара не была красавицей, но мужчины вряд ли отдавали себе в этом отчет, если они, подобно близнецам Тарлтонам, становились жертвами ее чар. Очень уж причудливо сочетались в ее лице утонченные черты матери — местной аристократки французского происхождения — и крупные, выразительные черты отца — пышущего здоровьем ирландца",
+                true
+        );
         return itemService.create(user.getId(), requestItemDto);
     }
 
     private BookingDto createBooking(UserDto user, ItemDto item, String start, String end) {
-        RequestBookingDto requestBookingDto = new RequestBookingDto(item.getId(), start, end);
-        return bookingService.create(user.getId(), requestBookingDto);
-    }
-
-    private BookingDto createBooking(String start, String end) {
-        UserDto owner = createUser("owner@mail.ru", "Owner");
-        ItemDto item = createItem(owner);
-        UserDto user = createUser("user@mail.ru", "User");
         RequestBookingDto requestBookingDto = new RequestBookingDto(item.getId(), start, end);
         return bookingService.create(user.getId(), requestBookingDto);
     }
