@@ -1,0 +1,18 @@
+server:
+  port: 8090
+spring:
+  output:
+    ansi:
+      enabled: "ALWAYS"
+shareit-server:
+  url: http://localhost:8091
+logging.level:
+  ru.yandex.practicum.shareit: TRACE
+  org:
+    zalando.logbook: TRACE
+  springframework:
+    orm:
+      jpa: "INFO"
+      jpa.JpaTransactionManager: "DEBUG"
+    transaction: "INFO"
+    transaction.interceptor: "TRACE"
